@@ -104,37 +104,50 @@ public class CapacitorMuseTrainerMidiPlugin: CAPPlugin {
                                     "timestamp": Int(cmd.timestamp.timeIntervalSince1970 * 1000)
                                 ]
                                 
-                                // Add message-specific fields
-                                if let channelCmd = cmd as? MIKMIDIChannelVoiceCommand {
-                                    switch cmd.commandType {
-                                    case .noteOff, .noteOn:
-                                        message["note"] = Int(channelCmd.note)
-                                        message["velocity"] = Int(channelCmd.velocity)
-                                    case .polyphonicKeyPressure:
-                                        message["note"] = Int(channelCmd.note)
-                                        message["pressure"] = Int(channelCmd.velocity)
-                                    case .controlChange:
-                                        if let ccCmd = cmd as? MIKMIDIControlChangeCommand {
-                                            message["controller"] = Int(ccCmd.controllerNumber)
-                                            message["value"] = Int(ccCmd.controllerValue)
+                                // Add message-specific fields based on MIDI command data
+                                // Use raw MIDI data bytes for compatibility across MIKMIDI versions
+                                if let midiData = cmd.midiData, midiData.count >= 1 {
+                                    let status = midiData[0]
+                                    let command = (status & 0xF0) >> 4
+                                    
+                                    switch command {
+                                    case 0x8, 0x9: // Note Off/On
+                                        if midiData.count >= 3 {
+                                            message["note"] = Int(midiData[1])
+                                            message["velocity"] = Int(midiData[2])
                                         }
-                                    case .programChange:
-                                        if let pcCmd = cmd as? MIKMIDIProgramChangeCommand {
-                                            message["program"] = Int(pcCmd.programNumber)
+                                    case 0xA: // Polyphonic Pressure
+                                        if midiData.count >= 3 {
+                                            message["note"] = Int(midiData[1])
+                                            message["pressure"] = Int(midiData[2])
                                         }
-                                    case .channelPressure:
-                                        if let cpCmd = cmd as? MIKMIDIChannelPressureCommand {
-                                            message["pressure"] = Int(cpCmd.pressure)
+                                    case 0xB: // Control Change
+                                        if midiData.count >= 3 {
+                                            message["controller"] = Int(midiData[1])
+                                            message["value"] = Int(midiData[2])
                                         }
-                                    case .pitchWheelChange:
-                                        if let pwCmd = cmd as? MIKMIDIPitchWheelChangeCommand {
-                                            message["value"] = Int(pwCmd.pitchChange)
+                                    case 0xC: // Program Change
+                                        if midiData.count >= 2 {
+                                            message["program"] = Int(midiData[1])
+                                        }
+                                    case 0xD: // Channel Pressure
+                                        if midiData.count >= 2 {
+                                            message["pressure"] = Int(midiData[1])
+                                        }
+                                    case 0xE: // Pitch Bend
+                                        if midiData.count >= 3 {
+                                            let lsb = Int(midiData[1])
+                                            let msb = Int(midiData[2])
+                                            message["value"] = (msb << 7) | lsb
                                         }
                                     default:
                                         break
                                     }
-                                } else if let sysexCmd = cmd as? MIKMIDISystemExclusiveCommand {
-                                    message["data"] = sysexCmd.sysexData?.map { Int($0) } ?? []
+                                } else if cmd.commandType == .systemExclusive {
+                                    // For SysEx, include the full MIDI data
+                                    if let midiData = cmd.midiData {
+                                        message["data"] = midiData.map { Int($0) }
+                                    }
                                 }
                                 
                                 self.notifyListeners("commandReceive", data: [

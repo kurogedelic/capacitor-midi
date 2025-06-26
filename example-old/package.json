@@ -1,0 +1,20 @@
+{
+  "name": "@kurogedelic/capacitor-midi-example",
+  "version": "1.0.0",
+  "description": "Example application demonstrating @kurogedelic/capacitor-midi plugin",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "serve": "npm run dev"
+  },
+  "dependencies": {
+    "@kurogedelic/capacitor-midi": "file:..",
+    "@capacitor/core": "^6.2.1"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0",
+    "typescript": "^5.8.3"
+  }
+}

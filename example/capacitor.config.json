@@ -1,0 +1,12 @@
+{
+  "appId": "com.example.miditest",
+  "appName": "MIDI Test App",
+  "webDir": "dist",
+  "plugins": {
+    "SplashScreen": {
+      "launchAutoHide": true,
+      "launchShowDuration": 3000,
+      "backgroundColor": "#ffffff"
+    }
+  }
+}

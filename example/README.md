@@ -1,159 +1,234 @@
-# Capacitor MIDI Plugin Example
+# 🎵 Capacitor MIDI Test App
 
-This example demonstrates how to use the `@kurogedelic/capacitor-midi` plugin in a web application.
+A comprehensive MIDI testing application built with Capacitor, designed to test and demonstrate the functionality of the `@kurogedelic/capacitor-midi` plugin.
 
-## Features Demonstrated
+## 🚀 Features
 
-- 🔌 **Device Management**: List and monitor MIDI devices
-- 🎹 **Virtual Keyboard**: Interactive keyboard to send MIDI notes
-- 🎛️ **MIDI Controls**: Send various MIDI messages (CC, Program Change, Pitch Bend, SysEx)
-- 📊 **Real-time Logging**: Display incoming and outgoing MIDI messages
-- 🎵 **Message Types**: Support for all MIDI 1.0 message types
+### 🔌 MIDI Device Management
+- **Device Discovery**: List and monitor connected MIDI devices
+- **Real-time Status**: Live connection status updates
+- **Device Information**: Display device names, manufacturers, and types
+- **WebMIDI Comparison**: Compare plugin results with native WebMIDI API
 
-## Quick Start
+### 🎹 Virtual Keyboard
+- **Interactive Piano**: 12-key virtual piano (C4-B4)
+- **Note Visualization**: Visual feedback for pressed keys
+- **MIDI Output**: Send Note On/Off messages to connected devices
+- **Multi-touch Support**: Handle multiple simultaneous notes
 
-1. **Install dependencies**:
+### 🎛️ MIDI Controls
+- **Control Change**: Send CC #7 (Volume) with random values
+- **Program Change**: Send random program change messages
+- **Pitch Bend**: Send 14-bit pitch bend data
+- **SysEx**: Send System Exclusive messages (General MIDI Reset)
 
+### 📊 Real-time Monitoring
+- **Message Log**: Timestamped MIDI message display
+- **Bidirectional Communication**: Monitor both sent and received messages
+- **Message Parsing**: Detailed breakdown of MIDI message types:
+  - Note On/Off (with note name conversion)
+  - Control Change
+  - Program Change
+  - Pitch Bend
+  - Channel/Polyphonic Pressure
+  - System Exclusive
+
+### 🔧 Debug Tools
+- **WebMIDI Debug**: Comprehensive browser MIDI API analysis
+- **Browser Compatibility**: Check WebMIDI API availability
+- **Device Enumeration**: List all available inputs and outputs
+- **Permission Status**: Monitor MIDI access permissions
+
+## 🛠️ Technical Stack
+
+- **Framework**: Capacitor 7.4.0
+- **Platform**: iOS (with potential for Android/Web)
+- **Language**: Vanilla JavaScript (ES6 Classes)
+- **UI**: HTML5 + CSS3 (No framework dependencies)
+- **MIDI Plugin**: `@kurogedelic/capacitor-midi`
+
+## 📱 Platform Support
+
+### iOS
+- ✅ Core MIDI integration
+- ✅ Bluetooth MIDI support
+- ✅ USB MIDI device support
+- ✅ Network MIDI support
+- ✅ Background MIDI processing
+
+### Web
+- ✅ WebMIDI API fallback
+- ✅ Browser-based MIDI access
+- ✅ Cross-platform debugging
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js 16+
+- Xcode 14+ (for iOS development)
+- iOS Simulator or physical iOS device
+- MIDI device (optional, for testing)
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd capacitor-midi-test-app
+   ```
+
+2. **Install dependencies**
    ```bash
    npm install
    ```
 
-2. **Start development server**:
-
+3. **Add iOS platform**
    ```bash
-   npm run dev
+   npx cap add ios
    ```
 
-3. **Open in browser**: Navigate to http://localhost:3000
+4. **Build the project**
+   ```bash
+   npm run build
+   npx cap sync
+   ```
 
-## Testing the Example
+5. **Open in Xcode**
+   ```bash
+   npx cap open ios
+   ```
 
-### Prerequisites
+6. **Run on device/simulator**
+   - Select target device in Xcode
+   - Press Cmd+R to build and run
 
-- **Chrome/Firefox/Edge**: Full WebMIDI API support
-- **MIDI Device**: Connect a MIDI keyboard or use software like LoopMIDI (Windows) or IAC Driver (macOS)
+### Testing with MIDI Devices
 
-### Basic Testing
+1. **Connect a MIDI device**
+   - USB MIDI interface
+   - Bluetooth MIDI keyboard
+   - Network MIDI device
+   - Virtual MIDI device
 
-1. **Connect MIDI Device**: Connect a USB MIDI keyboard or enable virtual MIDI ports
-2. **List Devices**: Click "List MIDI Devices" to see available devices
-3. **Play Virtual Keyboard**: Click the on-screen keys to send MIDI notes
-4. **Test Controls**: Try the CC, Program Change, Pitch Bend, and SysEx buttons
-5. **Monitor Messages**: Watch the log for incoming MIDI messages from your device
+2. **Grant permissions**
+   - Allow Bluetooth access when prompted
+   - Accept MIDI device connections
 
-### Advanced Testing
+3. **Test functionality**
+   - Click "List MIDI Devices" to discover devices
+   - Use virtual keyboard to send notes
+   - Monitor incoming MIDI messages in the log
 
-1. **Device Hotplug**: Connect/disconnect MIDI devices while the app is running
-2. **Multiple Devices**: Test with multiple MIDI inputs and outputs
-3. **Real-time Performance**: Test latency with fast note sequences
-4. **Message Types**: Send various MIDI message types to test parsing
+## 🎯 Usage Examples
 
-### Safari Limitations
-
-If using Safari, you may see limited functionality due to WebMIDI API restrictions:
-
-- Permission prompts for MIDI access
-- Limited SysEx support
-- Timing precision issues
-
-**Recommendation**: For iOS devices, use this plugin in a Capacitor app with native iOS implementation.
-
-## Code Structure
-
-```
-example/
-├── src/
-│   └── main.ts          # Main example code
-├── index.html           # HTML interface
-├── package.json         # Dependencies
-├── vite.config.ts       # Vite configuration
-└── tsconfig.json        # TypeScript configuration
-```
-
-## Key Implementation Details
-
-### Device Management
-
-```typescript
-// List available MIDI devices
-const { devices } = await CapacitorMidi.listDevices();
-
-// Listen for device changes
-CapacitorMidi.addListener('deviceChange', event => {
-  console.log(`Device ${event.state}: ${event.device.name}`);
-});
+### Basic Device Discovery
+```javascript
+// List all available MIDI devices
+const result = await CapacitorMidi.listDevices();
+console.log('Found devices:', result.devices);
 ```
 
 ### Sending MIDI Messages
-
-```typescript
-// Send Note On
+```javascript
+// Send a Note On message
 await CapacitorMidi.sendCommand({
-  command: [0x90, 60, 100], // Note On, Middle C, velocity 100
-  timestamp: Date.now(),
-});
-
-// Send Control Change
-await CapacitorMidi.sendCommand({
-  command: [0xb0, 7, 64], // CC #7 (Volume), value 64
-  timestamp: Date.now(),
+  command: [0x90, 60, 100], // Note On, Middle C, Velocity 100
+  timestamp: Date.now()
 });
 ```
 
 ### Receiving MIDI Messages
-
-```typescript
-CapacitorMidi.addListener('commandReceive', event => {
-  const { message, deviceId } = event;
-
-  switch (message.type) {
-    case 'noteOn':
-      console.log(`Note ON: ${message.note}, velocity: ${message.velocity}`);
-      break;
-    case 'controlChange':
-      console.log(`CC ${message.controller}: ${message.value}`);
-      break;
-    // ... handle other message types
-  }
+```javascript
+// Listen for incoming MIDI messages
+CapacitorMidi.addListener('commandReceive', (event) => {
+  console.log('Received:', event.message);
+  console.log('From device:', event.deviceId);
 });
 ```
 
-## Browser Compatibility
+## 🔍 Troubleshooting
 
-| Browser      | Support Level | Notes              |
-| ------------ | ------------- | ------------------ |
-| Chrome 43+   | ✅ Full       | Recommended        |
-| Firefox 108+ | ✅ Full       | Recommended        |
-| Edge 79+     | ✅ Full       | Recommended        |
-| Safari 14.1+ | ⚠️ Limited    | Use with caution   |
-| iOS Safari   | ❌ None       | Use native iOS app |
+### Common Issues
 
-## Troubleshooting
+**No devices detected**
+- Ensure MIDI device is properly connected
+- Check device compatibility with iOS Core MIDI
+- Restart the app to refresh device list
 
-### No MIDI Devices Found
+**Permission denied**
+- Check iOS Settings > Privacy > Bluetooth
+- Ensure app has Bluetooth permissions
+- Try reinstalling the app
 
-1. Ensure MIDI device is connected and powered on
-2. Check if device appears in system MIDI settings
-3. Try refreshing the page and listing devices again
-4. On Windows, you may need to install device-specific drivers
+**WebMIDI not working**
+- Use HTTPS for web deployment
+- Enable WebMIDI in browser settings
+- Check browser compatibility
 
-### Permission Denied
+### Debug Information
 
-1. Check browser permissions for MIDI access
-2. Some browsers require HTTPS for WebMIDI API
-3. Safari always prompts for permission
+Use the "Debug WebMIDI" button to get detailed information about:
+- Browser MIDI API support
+- Available MIDI devices
+- Permission status
+- System configuration
 
-### Messages Not Received
+## 📋 MIDI Message Types Supported
 
-1. Verify device is set to send MIDI data
-2. Check if device is in the correct MIDI channel
-3. Ensure the device is configured as a MIDI output
+| Type | Description | Status |
+|------|-------------|--------|
+| Note On/Off | Musical note messages | ✅ |
+| Control Change | Continuous controllers | ✅ |
+| Program Change | Instrument selection | ✅ |
+| Pitch Bend | Pitch wheel data | ✅ |
+| Channel Pressure | Aftertouch | ✅ |
+| Polyphonic Pressure | Per-note aftertouch | ✅ |
+| System Exclusive | Device-specific data | ✅ |
+| Clock/Transport | MIDI timing | 🔄 |
 
-## Next Steps
+## 🧪 Testing Scenarios
 
-- Integrate into a Capacitor app for iOS/Android support
-- Add more sophisticated MIDI sequencing
-- Implement MIDI file playback
-- Add support for MIDI 2.0 features (future)
+### Manual Testing
+1. **Device Connection**: Connect/disconnect MIDI devices
+2. **Note Input**: Play notes on external keyboard
+3. **Control Input**: Move knobs/faders on MIDI controller
+4. **Virtual Keyboard**: Test app's note output
+5. **MIDI Controls**: Test CC, Program Change, Pitch Bend
 
-For more information, see the [main plugin documentation](../README.md).
+### Automated Testing
+- Device enumeration accuracy
+- Message parsing correctness
+- Latency measurements
+- Memory usage monitoring
+
+## 🤝 Contributing
+
+This project serves as a test bed for the `@kurogedelic/capacitor-midi` plugin. Contributions are welcome!
+
+### Areas for Improvement
+- Android platform support
+- Additional MIDI message types
+- Latency optimization
+- UI/UX enhancements
+- Performance monitoring
+
+## 📝 License
+
+MIT License - see LICENSE file for details
+
+## 👤 Author
+
+**Leo Kuroshita @ kurogedelic**
+- GitHub: [@kurogedelic](https://github.com/kurogedelic)
+- Plugin: [@kurogedelic/capacitor-midi](https://github.com/kurogedelic/capacitor-midi)
+
+## 🙏 Acknowledgments
+
+- Capacitor team for the excellent cross-platform framework
+- MIKMIDI library for robust iOS MIDI support
+- WebMIDI API specification contributors
+- MIDI device manufacturers for protocol documentation
+
+---
+
+*Built with ❤️ for the MIDI community*

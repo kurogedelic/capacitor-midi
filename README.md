@@ -1,13 +1,23 @@
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/kurogedelic/capacitor-midi/blob/main/LICENSE)
-[![version](https://img.shields.io/npm/v/@kurogedelic/capacitor-midi/latest.svg)](https://www.npmjs.com/package/@kurogedelic/capacitor-midi)
 [![CI](https://github.com/kurogedelic/capacitor-midi/workflows/CI/badge.svg)](https://github.com/kurogedelic/capacitor-midi/actions)
-[![Coverage](https://codecov.io/gh/kurogedelic/capacitor-midi/branch/main/graph/badge.svg)](https://codecov.io/gh/kurogedelic/capacitor-midi)
 
-# @kurogedelic/capacitor-midi
+# capacitor-midi
 
 Modern Capacitor MIDI plugin with comprehensive MIDI 1.0 support and full TypeScript integration.
 
 > **Note**: This is an enhanced fork of [musetrainer/capacitor-musetrainer-midi](https://github.com/musetrainer/capacitor-musetrainer-midi) with additional features, modern tooling, comprehensive tests, and improved developer experience.
+
+## 🎵 Enhanced Example App
+
+This repository now includes a fully functional MIDI test application that demonstrates all plugin capabilities:
+
+- 🎹 **Virtual Keyboard**: Click keys to send MIDI notes with proper velocity
+- 🎛️ **MIDI Controls**: Send CC, Program Change, Pitch Bend, and SysEx messages
+- 📊 **Real-time Logging**: View all incoming MIDI messages with detailed information
+- 🔌 **Device Management**: List and monitor MIDI device connections
+- 🌐 **Web & iOS Ready**: Tested and working on both platforms
+
+All MIDI message types have been verified working: **Note On/Off**, **SysEx**, **Pitch Bend**, **MIDI CC**, and **Program Change**.
 
 ## ✅ Testing Status
 
@@ -83,41 +93,42 @@ await CapacitorMidi.sendCommand({
 
 ## 🚀 Try the Example
 
-Check out the interactive example application in the [`example/`](./example/) directory:
+Check out the enhanced example application in the [`example/`](./example/) directory:
 
 ```bash
 cd example
 npm install
-npm run dev
+npm run start    # For web development
+# OR build for iOS:
+npx cap build ios
+npx cap open ios
 ```
 
-The example demonstrates:
+The example app is a comprehensive MIDI test suite featuring:
 
-- 🔌 Device management and monitoring
-- 🎹 Virtual keyboard for sending notes
-- 🎛️ MIDI controls (CC, Program Change, Pitch Bend, SysEx)
-- 📊 Real-time message logging
-- 🎵 Support for all MIDI message types
+- 🔌 **Device Management**: List and monitor MIDI device connections in real-time
+- 🎹 **Virtual Keyboard**: Interactive piano keyboard with velocity-sensitive note sending
+- 🎛️ **MIDI Controls**: Buttons for CC (Volume), Program Change, Pitch Bend, and SysEx
+- 📊 **Message Logging**: Real-time display of all incoming MIDI messages
+- 🧪 **Verified Functionality**: All MIDI message types tested and confirmed working
+- 🌐 **Cross-Platform**: Works on both web browsers and iOS devices
 
 ## 🔧 Supported Platforms
 
 - ✅ **Web**: Chrome 43+, Firefox 108+, Edge 79+
-- ⚠️ **Safari**: Limited support - Safari 14.1+ has partial WebMIDI API support (requires user permission and may have limitations)
 - ✅ **iOS**: iOS 14.0+ (using CoreMIDI via MIKMIDI framework) - **Recommended for iOS devices**
 - ⏳ **Android**: Planned for future release
 
 ### WebMIDI Browser Support
 
-| Browser        | Support Level | Notes                                                |
-| -------------- | ------------- | ---------------------------------------------------- |
-| Chrome         | ✅ Full       | Complete WebMIDI API support since v43               |
-| Firefox        | ✅ Full       | Complete support since v108                          |
-| Edge           | ✅ Full       | Complete support since v79                           |
-| Safari         | ⚠️ Limited    | Partial support since 14.1, requires user permission |
-| iOS Safari     | ❌ None       | Use native iOS implementation instead                |
-| Android Chrome | ✅ Full       | Same as desktop Chrome                               |
+| Browser        | Support Level | Notes                                |
+| -------------- | ------------- | ------------------------------------ |
+| Chrome         | ✅ Full       | Complete WebMIDI API support since v43 |
+| Firefox        | ✅ Full       | Complete support since v108         |
+| Edge           | ✅ Full       | Complete support since v79          |
+| Android Chrome | ✅ Full       | Same as desktop Chrome              |
 
-> **💡 Tip for iOS**: While Safari on iOS has limited WebMIDI support, this plugin provides full native CoreMIDI integration for iOS apps, offering better performance and reliability.
+> **💡 Note**: For iOS devices, use the native iOS implementation instead of web browsers for optimal MIDI performance and reliability.
 
 ## 📋 Supported MIDI Messages
 
@@ -194,12 +205,18 @@ npm test
 - TypeScript type definitions and IntelliSense
 - Unit tests covering all MIDI message types
 
+**✅ Recently Completed:**
+
+- iOS native implementation tested and verified working
+- Real device testing with physical MIDI hardware completed
+- All MIDI message types (Note, SysEx, Pitch Bend, CC, Program Change) confirmed functional
+- Enhanced example app with comprehensive testing interface
+
 **⏳ Next Steps:**
 
-- Capacitor app integration testing for iOS native implementation
-- Real device testing with physical MIDI hardware
-- Performance testing under load
-- Background MIDI processing on iOS
+- Performance testing under heavy MIDI load
+- Background MIDI processing optimization for iOS
+- Android platform support
 
 ## 🤝 Contributing
 
@@ -435,7 +452,7 @@ This enhanced fork includes several improvements over the original [musetrainer/
 
 ## 📜 License
 
-MIT © [Kurogedelic](https://github.com/kurogedelic)
+MIT © [Leo Kuroshita @ kurogedelic](https://x.com/kurogedelic)
 
 Original work © [MuseTrainer](https://github.com/musetrainer)
 

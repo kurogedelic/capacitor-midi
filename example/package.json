@@ -1,20 +1,29 @@
 {
-  "name": "@kurogedelic/capacitor-midi-example",
-  "version": "1.0.0",
-  "description": "Example application demonstrating @kurogedelic/capacitor-midi plugin",
-  "private": true,
+  "name": "capacitor-midi-example",
+  "version": "2.0.0",
+  "description": "MIDI Test App - Example implementation of @kurogedelic/capacitor-midi",
+  "type": "module",
+  "keywords": [
+    "capacitor",
+    "mobile",
+    "midi",
+    "audio"
+  ],
   "scripts": {
-    "dev": "vite",
+    "start": "vite",
     "build": "vite build",
-    "preview": "vite preview",
-    "serve": "npm run dev"
+    "preview": "vite preview"
   },
   "dependencies": {
-    "@kurogedelic/capacitor-midi": "file:..",
-    "@capacitor/core": "^6.2.1"
+    "@capacitor/camera": "latest",
+    "@capacitor/core": "latest",
+    "@capacitor/splash-screen": "latest",
+    "@kurogedelic/capacitor-midi": "file:.."
   },
   "devDependencies": {
-    "vite": "^5.0.0",
-    "typescript": "^5.8.3"
-  }
+    "@capacitor/cli": "latest",
+    "vite": "^5.4.2"
+  },
+  "author": "",
+  "license": "ISC"
 }

@@ -81,6 +81,16 @@ export class CapacitorMuseTrainerMidiWeb
       };
     }
 
+    if (eventName === 'connectError') {
+      // Web implementation handles connection errors internally
+      // This is mainly for API compatibility
+      return {
+        remove: async () => {
+          // Do nothing
+        },
+      };
+    }
+
     return {
       remove: async () => {
         // Do nothing

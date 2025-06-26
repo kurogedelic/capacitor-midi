@@ -63,7 +63,7 @@ public class CapacitorMuseTrainerMidiPlugin: CAPPlugin {
                                 case .noteOn:
                                     cmdType = "noteOn"
                                 case .polyphonicKeyPressure:
-                                    cmdType = "polyphonicKeyPressure"
+                                    cmdType = "polyphonicPressure"
                                 case .controlChange:
                                     cmdType = "controlChange"
                                 case .programChange:
@@ -71,11 +71,11 @@ public class CapacitorMuseTrainerMidiPlugin: CAPPlugin {
                                 case .channelPressure:
                                     cmdType = "channelPressure"
                                 case .pitchWheelChange:
-                                    cmdType = "pitchWheelChange"
+                                    cmdType = "pitchBend"
                                 case .systemMessage:
                                     cmdType = "systemMessage"
                                 case .systemExclusive:
-                                    cmdType = "systemExclusive"
+                                    cmdType = "sysex"
                                 case .systemTimecodeQuarterFrame:
                                     cmdType = "systemTimecodeQuarterFrame"
                                 case .systemSongPositionPointer:
@@ -98,13 +98,38 @@ public class CapacitorMuseTrainerMidiPlugin: CAPPlugin {
                                     cmdType = "unknown"
                                 }
                                 
-                                let message: [String: Any] = [
+                                var message: [String: Any] = [
                                     "type": cmdType,
                                     "channel": Int(cmd.channel),
-                                    "note": Int(cmd.dataByte1),
-                                    "velocity": Int(cmd.dataByte2),
                                     "timestamp": Int(cmd.timestamp)
                                 ]
+                                
+                                // Add message-specific fields
+                                switch cmd.commandType {
+                                case .noteOff, .noteOn:
+                                    message["note"] = Int(cmd.dataByte1)
+                                    message["velocity"] = Int(cmd.dataByte2)
+                                case .polyphonicKeyPressure:
+                                    message["note"] = Int(cmd.dataByte1)
+                                    message["pressure"] = Int(cmd.dataByte2)
+                                case .controlChange:
+                                    message["controller"] = Int(cmd.dataByte1)
+                                    message["value"] = Int(cmd.dataByte2)
+                                case .programChange:
+                                    message["program"] = Int(cmd.dataByte1)
+                                case .channelPressure:
+                                    message["pressure"] = Int(cmd.dataByte1)
+                                case .pitchWheelChange:
+                                    let lsb = Int(cmd.dataByte1)
+                                    let msb = Int(cmd.dataByte2)
+                                    message["value"] = (msb << 7) | lsb
+                                case .systemExclusive:
+                                    // For SysEx, we need the full data array
+                                    message["data"] = cmd.data?.map { Int($0) } ?? []
+                                default:
+                                    // For other system messages, include raw data
+                                    message["data"] = [Int(cmd.dataByte1), Int(cmd.dataByte2)]
+                                }
                                 
                                 self.notifyListeners("commandReceive", data: [
                                     "message": message,

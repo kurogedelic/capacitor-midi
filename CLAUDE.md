@@ -29,7 +29,7 @@ npm run verify:web
 
 # Lint and format code
 npm run lint
-npm run fmt
+npm run format
 
 # Generate documentation
 npm run docgen
@@ -71,9 +71,10 @@ The plugin follows Capacitor's standard architecture:
 
 ## Dependencies
 
-- **Runtime**: @capacitor/core, webmidi
-- **iOS**: MIKMIDI framework (specified in Podspec)
-- **Build**: TypeScript, Rollup, ESLint, Prettier, SwiftLint
+- **Runtime**: @capacitor/core v7.4.0+, webmidi
+- **iOS**: MIKMIDI framework (specified in Podspec), iOS 14.0+
+- **Build**: TypeScript 5, Rollup, ESLint, Prettier, SwiftLint
+- **Node.js**: 20+ (required for Capacitor v7)
 
 ## Testing and Verification
 
@@ -83,6 +84,7 @@ The project includes comprehensive testing infrastructure:
 - **Coverage reporting**: 80%+ code coverage with automated reporting
 - **CI/CD pipeline**: GitHub Actions for automated testing and releases
 - **Cross-platform verification**: Web and iOS build verification
+- **iOS Native Testing**: Successful CI/CD builds with Capacitor v7 and iOS 14.0+
 
 Run tests with `npm test` or `npm run test:coverage` for coverage reports.
 
@@ -95,7 +97,7 @@ This repository is an enhanced fork of the original [musetrainer/capacitor-muset
 - **Complete Type Safety**: Full TypeScript interfaces for all MIDI message types
 - **Comprehensive Testing**: Jest test suite with 80%+ coverage
 - **Enhanced Web Support**: Full CC, SysEx, and all MIDI message types on Web
-- **Modern Tooling**: Capacitor v6, TypeScript 5, modern build tools
+- **Modern Tooling**: Capacitor v7, TypeScript 5, modern build tools
 - **CI/CD Pipeline**: Automated testing, coverage, and release workflows
 - **Better Documentation**: Comprehensive API docs and usage examples
 

@@ -18,7 +18,7 @@ Modern Capacitor MIDI plugin with comprehensive MIDI 1.0 support and full TypeSc
 | 🎹 **Example App**        | ✅ **Tested**  | Interactive demo with device detection and controls |
 | 🧪 **Unit Tests**         | ✅ **Passing** | 26+ tests with 80%+ coverage                        |
 | 🏗️ **Build System**       | ✅ **Working** | TypeScript, Rollup, and all tooling operational     |
-| 📱 **iOS Native**         | ⏳ **Pending** | Requires Capacitor app integration testing          |
+| 📱 **iOS Native**         | ✅ **Passing** | CI/CD builds successfully with Capacitor v7         |
 | 🤖 **CI/CD**              | ✅ **Passing** | GitHub Actions running successfully                 |
 
 ## ✨ Features

@@ -28,7 +28,7 @@ Modern Capacitor MIDI plugin with comprehensive MIDI 1.0 support and full TypeSc
 - 🔒 **Type Safe**: Full TypeScript definitions with structured MIDI message types
 - ⚡ **Real-time Performance**: Optimized for low-latency MIDI processing
 - 🧪 **Well Tested**: Comprehensive test suite with 80%+ coverage
-- 📦 **Modern Tooling**: Built with latest Capacitor v6, TypeScript 5, and modern build tools
+- 📦 **Modern Tooling**: Built with Capacitor v6, TypeScript 5, and modern build tools
 
 ## 🚀 Quick Start
 

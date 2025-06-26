@@ -24,20 +24,59 @@ class MidiExample {
   }
 
   private async checkMidiSupport() {
+    // First check if WebMIDI API is available
+    this.log('🔍 Checking WebMIDI API availability...');
+    
+    if (!navigator.requestMIDIAccess) {
+      this.showStatus('WebMIDI API not supported in this browser ❌', 'error');
+      this.log('❌ navigator.requestMIDIAccess is not available');
+      this.log('💡 Try using Chrome, Firefox, or Edge browser');
+      return;
+    }
+    
+    this.log('✅ WebMIDI API is available');
+    
+    // Try to get MIDI access directly
     try {
-      // Try to list devices to check if MIDI is supported
+      this.log('🔍 Requesting MIDI access...');
+      const midiAccess = await navigator.requestMIDIAccess({ sysex: false });
+      this.log(`✅ MIDI access granted. SysEx enabled: ${midiAccess.sysexEnabled}`);
+      
+      // Check native MIDI devices
+      const inputs = Array.from(midiAccess.inputs.values());
+      const outputs = Array.from(midiAccess.outputs.values());
+      
+      this.log(`🎹 Native WebMIDI found ${inputs.length} inputs, ${outputs.length} outputs`);
+      inputs.forEach((input, i) => {
+        this.log(`  Input ${i + 1}: ${input.name} (${input.manufacturer}) - ${input.state}`);
+      });
+      outputs.forEach((output, i) => {
+        this.log(`  Output ${i + 1}: ${output.name} (${output.manufacturer}) - ${output.state}`);
+      });
+      
+    } catch (error) {
+      this.log(`❌ Failed to get MIDI access: ${error}`);
+    }
+    
+    // Now try the plugin
+    try {
+      this.log('🔍 Testing Capacitor MIDI plugin...');
       await CapacitorMidi.listDevices();
       this.showStatus('MIDI support detected! 🎵', 'success');
       this.log('✅ MIDI plugin initialized successfully');
     } catch (error) {
-      this.showStatus('MIDI not supported or permission denied ❌', 'error');
-      this.log(`❌ MIDI initialization failed: ${error}`);
+      this.showStatus('MIDI plugin error ❌', 'error');
+      this.log(`❌ MIDI plugin failed: ${error}`);
     }
   }
 
   private setupEventListeners() {
     document.getElementById('listDevices')?.addEventListener('click', () => {
       this.listDevices();
+    });
+
+    document.getElementById('debugWebMIDI')?.addEventListener('click', () => {
+      this.debugWebMIDI();
     });
 
     document.getElementById('clearLog')?.addEventListener('click', () => {
@@ -303,6 +342,71 @@ class MidiExample {
 
   private clearLog() {
     this.logElement.textContent = 'Log cleared.\n';
+  }
+
+  private async debugWebMIDI() {
+    this.log('🔧 === WebMIDI Debug Information ===');
+    
+    // Browser info
+    this.log(`🌐 Browser: ${navigator.userAgent}`);
+    this.log(`📍 URL: ${window.location.href}`);
+    this.log(`🔒 HTTPS: ${window.location.protocol === 'https:'}`);
+    
+    // WebMIDI API availability
+    this.log(`🎹 WebMIDI API available: ${!!navigator.requestMIDIAccess}`);
+    
+    if (!navigator.requestMIDIAccess) {
+      this.log('❌ WebMIDI API not supported - stopping debug');
+      return;
+    }
+    
+    try {
+      // Try with sysex: false first
+      this.log('🔍 Requesting MIDI access (sysex: false)...');
+      const midiAccess = await navigator.requestMIDIAccess({ sysex: false });
+      
+      this.log(`✅ MIDI Access granted:`);
+      this.log(`  - SysEx enabled: ${midiAccess.sysexEnabled}`);
+      this.log(`  - Inputs: ${midiAccess.inputs.size}`);
+      this.log(`  - Outputs: ${midiAccess.outputs.size}`);
+      
+      // List all inputs
+      this.log('📥 MIDI Inputs:');
+      midiAccess.inputs.forEach((input, id) => {
+        this.log(`  [${id}] ${input.name}`);
+        this.log(`      Manufacturer: ${input.manufacturer || 'Unknown'}`);
+        this.log(`      State: ${input.state}`);
+        this.log(`      Connection: ${input.connection}`);
+        this.log(`      Type: ${input.type}`);
+        this.log(`      Version: ${input.version || 'Unknown'}`);
+      });
+      
+      // List all outputs
+      this.log('📤 MIDI Outputs:');
+      midiAccess.outputs.forEach((output, id) => {
+        this.log(`  [${id}] ${output.name}`);
+        this.log(`      Manufacturer: ${output.manufacturer || 'Unknown'}`);
+        this.log(`      State: ${output.state}`);
+        this.log(`      Connection: ${output.connection}`);
+        this.log(`      Type: ${output.type}`);
+        this.log(`      Version: ${output.version || 'Unknown'}`);
+      });
+      
+      // Try with sysex: true
+      try {
+        this.log('🔍 Requesting MIDI access (sysex: true)...');
+        const sysexAccess = await navigator.requestMIDIAccess({ sysex: true });
+        this.log(`✅ SysEx access granted: ${sysexAccess.sysexEnabled}`);
+      } catch (sysexError) {
+        this.log(`⚠️ SysEx access denied: ${sysexError}`);
+      }
+      
+    } catch (error) {
+      this.log(`❌ MIDI access failed: ${error}`);
+      this.log(`Error details: ${JSON.stringify(error, null, 2)}`);
+    }
+    
+    this.log('🔧 === End Debug Information ===');
   }
 
   private showStatus(message: string, type: 'success' | 'error') {

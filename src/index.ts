@@ -2,7 +2,7 @@ import { registerPlugin } from '@capacitor/core';
 
 import type { CapacitorMuseTrainerMidiPlugin } from './definitions';
 
-const CapacitorMuseTrainerMidi = registerPlugin<CapacitorMuseTrainerMidiPlugin>(
+const CapacitorMidi = registerPlugin<CapacitorMuseTrainerMidiPlugin>(
   'CapacitorMuseTrainerMidi',
   {
     web: () => import('./web').then(m => new m.CapacitorMuseTrainerMidiWeb()),
@@ -10,4 +10,7 @@ const CapacitorMuseTrainerMidi = registerPlugin<CapacitorMuseTrainerMidiPlugin>(
 );
 
 export * from './definitions';
-export { CapacitorMuseTrainerMidi };
+export { CapacitorMidi };
+
+// Backward compatibility export
+export { CapacitorMidi as CapacitorMuseTrainerMidi };

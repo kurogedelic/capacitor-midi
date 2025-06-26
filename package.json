@@ -1,7 +1,7 @@
 {
-  "name": "capacitor-musetrainer-midi",
-  "version": "0.2.3",
-  "description": "Capacitor MIDI plugin by MuseTrainer",
+  "name": "@kurogedelic/capacitor-midi",
+  "version": "1.0.0",
+  "description": "Modern Capacitor MIDI plugin with comprehensive MIDI 1.0 support and full TypeScript integration",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
@@ -9,62 +9,86 @@
   "files": [
     "dist/",
     "ios/Plugin/",
-    "CapacitorMusetrainerMidi.podspec"
+    "CapacitorMidi.podspec"
   ],
-  "author": "Tai M. Vo",
+  "author": {
+    "name": "Kurogedelic",
+    "url": "https://github.com/kurogedelic"
+  },
+  "contributors": [
+    {
+      "name": "Tai M. Vo",
+      "note": "Original capacitor-musetrainer-midi author"
+    }
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/musetrainer/capacitor-musetrainer-midi.git"
+    "url": "git+https://github.com/kurogedelic/capacitor-midi.git"
   },
   "bugs": {
-    "url": "https://github.com/musetrainer/capacitor-musetrainer-midi/issues"
+    "url": "https://github.com/kurogedelic/capacitor-midi/issues"
   },
+  "homepage": "https://github.com/kurogedelic/capacitor-midi#readme",
   "keywords": [
     "capacitor",
     "plugin",
-    "native",
-    "mid",
-    "coremidi"
+    "midi",
+    "music",
+    "audio",
+    "coremidi",
+    "webmidi",
+    "typescript",
+    "ios",
+    "web",
+    "realtime",
+    "sysex",
+    "control-change"
   ],
   "scripts": {
     "verify": "npm run verify:ios && npm run verify:web",
     "verify:ios": "cd ios && pod install && xcodebuild -workspace Plugin.xcworkspace -scheme Plugin -destination generic/platform=iOS && cd ..",
     "verify:web": "npm run build",
-    "lint": "npm run eslint && npm run prettier -- --check && npm run swiftlint -- lint",
-    "fmt": "npm run eslint -- --fix && npm run prettier -- --write && npm run swiftlint -- --fix --format",
-    "eslint": "eslint . --ext ts",
-    "prettier": "prettier \"**/*.{css,html,ts,js,java}\"",
-    "swiftlint": "node-swiftlint",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "npm run lint:ts && npm run lint:format",
+    "lint:ts": "eslint . --ext .ts",
+    "lint:format": "prettier --check \"**/*.{ts,js,json,md}\"",
+    "format": "npm run format:ts && npm run format:prettier",
+    "format:ts": "eslint . --ext .ts --fix",
+    "format:prettier": "prettier --write \"**/*.{ts,js,json,md}\"",
     "docgen": "docgen --api CapacitorMuseTrainerMidiPlugin --output-readme README.md --output-json dist/docs.json",
-    "build": "npm run clean && npm run docgen && tsc && rollup -c rollup.config.js",
+    "build": "npm run clean && tsc && rollup -c rollup.config.js",
+    "build:docs": "npm run clean && npm run docgen && tsc && rollup -c rollup.config.js",
     "clean": "rimraf ./dist",
     "watch": "tsc --watch",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "prepack": "npm run build",
+    "release": "npm run build && npm publish"
   },
   "devDependencies": {
-    "@capacitor/android": "^4.0.0",
-    "@capacitor/core": "^4.0.0",
-    "@capacitor/docgen": "^0.0.18",
-    "@capacitor/ios": "^4.0.0",
-    "@ionic/eslint-config": "^0.3.0",
-    "@ionic/prettier-config": "^1.0.1",
-    "@ionic/swiftlint-config": "^1.1.2",
-    "eslint": "^7.11.0",
-    "prettier": "~2.3.0",
+    "@capacitor/android": "^6.0.0",
+    "@capacitor/core": "^6.2.1",
+    "@capacitor/docgen": "^0.2.2",
+    "@capacitor/ios": "^6.0.0",
+    "@testing-library/jest-dom": "^6.0.0",
+    "@types/jest": "^29.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.57.1",
+    "jest": "^29.0.0",
+    "jest-environment-jsdom": "^30.0.2",
+    "prettier": "^3.6.1",
     "prettier-plugin-java": "~1.0.2",
     "rimraf": "^3.0.2",
-    "rollup": "^2.32.0",
+    "rollup": "^4.44.0",
     "swiftlint": "^1.0.1",
-    "typescript": "~4.1.5"
+    "ts-jest": "^29.0.0",
+    "typescript": "^5.8.3"
   },
   "peerDependencies": {
-    "@capacitor/core": "^4.0.0"
-  },
-  "prettier": "@ionic/prettier-config",
-  "swiftlint": "@ionic/swiftlint-config",
-  "eslintConfig": {
-    "extends": "@ionic/eslint-config/recommended"
+    "@capacitor/core": "^6.0.0"
   },
   "capacitor": {
     "ios": {

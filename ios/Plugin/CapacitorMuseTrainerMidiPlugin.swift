@@ -30,7 +30,7 @@ public class CapacitorMuseTrainerMidiPlugin: CAPPlugin {
             .filter(self.validDevice)
             .map({ device in
                 return [
-                    "id": String(device.deviceID),
+                    "id": String(device.uniqueID),
                     "name": device.displayName ?? "",
                     "manufacturer": device.manufacturer ?? "",
                     "type": "both",
@@ -100,47 +100,53 @@ public class CapacitorMuseTrainerMidiPlugin: CAPPlugin {
                                 
                                 var message: [String: Any] = [
                                     "type": cmdType,
-                                    "channel": Int(cmd.channel),
-                                    "timestamp": Int(cmd.timestamp)
+                                    "channel": (cmd as? MIKMIDIChannelVoiceCommand)?.channel ?? 0,
+                                    "timestamp": Int(cmd.timestamp.timeIntervalSince1970 * 1000)
                                 ]
                                 
                                 // Add message-specific fields
-                                switch cmd.commandType {
-                                case .noteOff, .noteOn:
-                                    message["note"] = Int(cmd.dataByte1)
-                                    message["velocity"] = Int(cmd.dataByte2)
-                                case .polyphonicKeyPressure:
-                                    message["note"] = Int(cmd.dataByte1)
-                                    message["pressure"] = Int(cmd.dataByte2)
-                                case .controlChange:
-                                    message["controller"] = Int(cmd.dataByte1)
-                                    message["value"] = Int(cmd.dataByte2)
-                                case .programChange:
-                                    message["program"] = Int(cmd.dataByte1)
-                                case .channelPressure:
-                                    message["pressure"] = Int(cmd.dataByte1)
-                                case .pitchWheelChange:
-                                    let lsb = Int(cmd.dataByte1)
-                                    let msb = Int(cmd.dataByte2)
-                                    message["value"] = (msb << 7) | lsb
-                                case .systemExclusive:
-                                    // For SysEx, we need the full data array
-                                    message["data"] = cmd.data?.map { Int($0) } ?? []
-                                default:
-                                    // For other system messages, include raw data
-                                    message["data"] = [Int(cmd.dataByte1), Int(cmd.dataByte2)]
+                                if let channelCmd = cmd as? MIKMIDIChannelVoiceCommand {
+                                    switch cmd.commandType {
+                                    case .noteOff, .noteOn:
+                                        message["note"] = Int(channelCmd.note)
+                                        message["velocity"] = Int(channelCmd.velocity)
+                                    case .polyphonicKeyPressure:
+                                        message["note"] = Int(channelCmd.note)
+                                        message["pressure"] = Int(channelCmd.velocity)
+                                    case .controlChange:
+                                        if let ccCmd = cmd as? MIKMIDIControlChangeCommand {
+                                            message["controller"] = Int(ccCmd.controllerNumber)
+                                            message["value"] = Int(ccCmd.controllerValue)
+                                        }
+                                    case .programChange:
+                                        if let pcCmd = cmd as? MIKMIDIProgramChangeCommand {
+                                            message["program"] = Int(pcCmd.programNumber)
+                                        }
+                                    case .channelPressure:
+                                        if let cpCmd = cmd as? MIKMIDIChannelPressureCommand {
+                                            message["pressure"] = Int(cpCmd.pressure)
+                                        }
+                                    case .pitchWheelChange:
+                                        if let pwCmd = cmd as? MIKMIDIPitchWheelChangeCommand {
+                                            message["value"] = Int(pwCmd.pitchChange)
+                                        }
+                                    default:
+                                        break
+                                    }
+                                } else if let sysexCmd = cmd as? MIKMIDISystemExclusiveCommand {
+                                    message["data"] = sysexCmd.sysexData?.map { Int($0) } ?? []
                                 }
                                 
                                 self.notifyListeners("commandReceive", data: [
                                     "message": message,
-                                    "deviceId": String(source.device?.deviceID ?? 0)
+                                    "deviceId": String(source.entity?.device?.uniqueID ?? 0)
                                 ])
                             }
                         })
                     } catch {
                         self.notifyListeners("connectError", data: [
                             "error": String(describing: error),
-                            "deviceId": String(source.device?.deviceID ?? 0)
+                            "deviceId": String(source.entity?.device?.uniqueID ?? 0)
                         ])
                     }
                 }
@@ -159,7 +165,7 @@ public class CapacitorMuseTrainerMidiPlugin: CAPPlugin {
             .filter(self.validDevice)
             .map({ device in
                 return [
-                    "id": String(device.deviceID),
+                    "id": String(device.uniqueID),
                     "name": device.displayName ?? "",
                     "manufacturer": device.manufacturer ?? "",
                     "type": "both",

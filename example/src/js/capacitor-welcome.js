@@ -103,63 +103,72 @@ window.customElements.define(
     connectedCallback() {
       const self = this;
 
-      self.shadowRoot.querySelector('#take-photo').addEventListener('click', async function (e) {
-        try {
-          const photo = await Camera.getPhoto({
-            resultType: 'uri',
-          });
+      self.shadowRoot
+        .querySelector('#take-photo')
+        .addEventListener('click', async function (e) {
+          try {
+            const photo = await Camera.getPhoto({
+              resultType: 'uri',
+            });
 
-          const image = self.shadowRoot.querySelector('#image');
-          if (!image) {
-            return;
+            const image = self.shadowRoot.querySelector('#image');
+            if (!image) {
+              return;
+            }
+
+            image.src = photo.webPath;
+          } catch (e) {
+            console.warn('User cancelled', e);
           }
-
-          image.src = photo.webPath;
-        } catch (e) {
-          console.warn('User cancelled', e);
-        }
-      });
+        });
 
       // MIDI Test functionality
       let midiInitialized = false;
       let midiListener = null;
-      
-      self.shadowRoot.querySelector('#test-midi').addEventListener('click', async function (e) {
-        const outputDiv = self.shadowRoot.querySelector('#midi-output');
-        const button = self.shadowRoot.querySelector('#test-midi');
-        
-        // Prevent multiple clicks
-        if (button.disabled) return;
-        button.disabled = true;
-        button.textContent = 'Testing...';
-        
-        outputDiv.textContent = 'Testing MIDI...\n';
-        
-        try {
-          // List MIDI devices
-          const devices = await CapacitorMidi.listDevices();
-          outputDiv.textContent += `MIDI devices found: ${JSON.stringify(devices, null, 2)}\n`;
-          
-          // Add MIDI message listener only once
-          if (!midiInitialized) {
-            midiListener = await CapacitorMidi.addListener('commandReceive', (event) => {
-              console.log('MIDI message received:', event);
-              outputDiv.textContent += `MIDI message: ${JSON.stringify(event)}\n`;
-            });
-            midiInitialized = true;
-            outputDiv.textContent += 'MIDI listener added. Connect a MIDI device and send messages to see them here.\n';
-          } else {
-            outputDiv.textContent += 'MIDI already initialized. Connect a MIDI device and send messages to see them here.\n';
+
+      self.shadowRoot
+        .querySelector('#test-midi')
+        .addEventListener('click', async function (e) {
+          const outputDiv = self.shadowRoot.querySelector('#midi-output');
+          const button = self.shadowRoot.querySelector('#test-midi');
+
+          // Prevent multiple clicks
+          if (button.disabled) return;
+          button.disabled = true;
+          button.textContent = 'Testing...';
+
+          outputDiv.textContent = 'Testing MIDI...\n';
+
+          try {
+            // List MIDI devices
+            const devices = await CapacitorMidi.listDevices();
+            outputDiv.textContent += `MIDI devices found: ${JSON.stringify(devices, null, 2)}\n`;
+
+            // Add MIDI message listener only once
+            if (!midiInitialized) {
+              midiListener = await CapacitorMidi.addListener(
+                'commandReceive',
+                event => {
+                  console.log('MIDI message received:', event);
+                  outputDiv.textContent += `MIDI message: ${JSON.stringify(event)}\n`;
+                },
+              );
+              midiInitialized = true;
+              outputDiv.textContent +=
+                'MIDI listener added. Connect a MIDI device and send messages to see them here.\n';
+            } else {
+              outputDiv.textContent +=
+                'MIDI already initialized. Connect a MIDI device and send messages to see them here.\n';
+            }
+          } catch (error) {
+            console.error('MIDI error:', error);
+            outputDiv.textContent += `MIDI error: ${error.message}\n`;
+          } finally {
+            // Re-enable button
+            button.disabled = false;
+            button.textContent = 'List MIDI Devices';
           }
-        } catch (error) {
-          console.error('MIDI error:', error);
-          outputDiv.textContent += `MIDI error: ${error.message}\n`;
-        } finally {
-          // Re-enable button
-          button.disabled = false;
-          button.textContent = 'List MIDI Devices';
-        }
-      });
+        });
 
       // MIDI initialization removed to prevent infinite calls
     }
@@ -169,7 +178,7 @@ window.customElements.define(
         const devices = await CapacitorMidi.listDevices();
         console.log('MIDI devices:', devices);
 
-        CapacitorMidi.addListener('commandReceive', (event) => {
+        CapacitorMidi.addListener('commandReceive', event => {
           console.log('MIDI message received:', event);
         });
       } catch (error) {

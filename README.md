@@ -121,12 +121,12 @@ The example app is a comprehensive MIDI test suite featuring:
 
 ### WebMIDI Browser Support
 
-| Browser        | Support Level | Notes                                |
-| -------------- | ------------- | ------------------------------------ |
+| Browser        | Support Level | Notes                                  |
+| -------------- | ------------- | -------------------------------------- |
 | Chrome         | ✅ Full       | Complete WebMIDI API support since v43 |
-| Firefox        | ✅ Full       | Complete support since v108         |
-| Edge           | ✅ Full       | Complete support since v79          |
-| Android Chrome | ✅ Full       | Same as desktop Chrome              |
+| Firefox        | ✅ Full       | Complete support since v108            |
+| Edge           | ✅ Full       | Complete support since v79             |
+| Android Chrome | ✅ Full       | Same as desktop Chrome                 |
 
 > **💡 Note**: For iOS devices, use the native iOS implementation instead of web browsers for optimal MIDI performance and reliability.
 

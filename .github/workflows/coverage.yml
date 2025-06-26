@@ -27,12 +27,6 @@ jobs:
       - name: Run tests with coverage
         run: npm run test:coverage
 
-      - name: Generate coverage badges
-        uses: jaywcjlove/coverage-badges-cli@main
-        with:
-          source: coverage/lcov.info
-          output: coverage/badges.svg
-
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         with:

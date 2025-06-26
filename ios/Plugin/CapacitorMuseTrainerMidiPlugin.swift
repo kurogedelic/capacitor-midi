@@ -28,9 +28,21 @@ public class CapacitorMuseTrainerMidiPlugin: CAPPlugin {
     func listenForDevices(_ dm: MIKMIDIDeviceManager) {
         let devices = dm.availableDevices
             .filter(self.validDevice)
-            .map({ $0.manufacturer ?? "" })
-        let data = ["devices": devices]
-        self.notifyListeners("deviceChange", data: data)
+            .map({ device in
+                return [
+                    "id": String(device.deviceID),
+                    "name": device.displayName ?? "",
+                    "manufacturer": device.manufacturer ?? "",
+                    "type": "both",
+                    "connected": true
+                ]
+            })
+        for device in devices {
+            self.notifyListeners("deviceChange", data: [
+                "device": device,
+                "state": "connected"
+            ])
+        }
     }
     
     func listenForCommands(_ dm: MIKMIDIDeviceManager) {
@@ -53,7 +65,7 @@ public class CapacitorMuseTrainerMidiPlugin: CAPPlugin {
                                 case .polyphonicKeyPressure:
                                     cmdType = "polyphonicKeyPressure"
                                 case .controlChange:
-                                    cmdType = "controlChage"
+                                    cmdType = "controlChange"
                                 case .programChange:
                                     cmdType = "programChange"
                                 case .channelPressure:
@@ -86,15 +98,25 @@ public class CapacitorMuseTrainerMidiPlugin: CAPPlugin {
                                     cmdType = "unknown"
                                 }
                                 
-                                self.notifyListeners("commandReceive", data: [
+                                let message: [String: Any] = [
                                     "type": cmdType,
-                                    "dataByte1": cmd.dataByte1,
-                                    "dataByte2": cmd.dataByte2
+                                    "channel": Int(cmd.channel),
+                                    "note": Int(cmd.dataByte1),
+                                    "velocity": Int(cmd.dataByte2),
+                                    "timestamp": Int(cmd.timestamp)
+                                ]
+                                
+                                self.notifyListeners("commandReceive", data: [
+                                    "message": message,
+                                    "deviceId": String(source.device?.deviceID ?? 0)
                                 ])
                             }
                         })
                     } catch {
-                        self.notifyListeners("connectError", data: [source.displayName ?? "Unknown": String(describing: error)])
+                        self.notifyListeners("connectError", data: [
+                            "error": String(describing: error),
+                            "deviceId": String(source.device?.deviceID ?? 0)
+                        ])
                     }
                 }
             }
@@ -108,14 +130,18 @@ public class CapacitorMuseTrainerMidiPlugin: CAPPlugin {
     }
     
     @objc func listDevices(_ call: CAPPluginCall) {
-        if deviceManager.connectedInputSources.count == 0 {
-            self.midiListen(deviceManager)
-        } else {
-            let devices = deviceManager.availableDevices
-                .filter(self.validDevice)
-                .map({ $0.manufacturer ?? "" })
-            call.resolve(["devices": devices])
-        }
+        let devices = deviceManager.availableDevices
+            .filter(self.validDevice)
+            .map({ device in
+                return [
+                    "id": String(device.deviceID),
+                    "name": device.displayName ?? "",
+                    "manufacturer": device.manufacturer ?? "",
+                    "type": "both",
+                    "connected": true
+                ]
+            })
+        call.resolve(["devices": devices])
     }
     
     @objc func sendCommand(_ call: CAPPluginCall) {

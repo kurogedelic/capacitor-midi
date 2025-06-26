@@ -62,9 +62,23 @@ await CapacitorMidi.sendCommand({
 
 ## 🔧 Supported Platforms
 
-- ✅ **Web**: Chrome, Firefox, Safari (with WebMIDI API support)
-- ✅ **iOS**: iOS 13.0+ (using CoreMIDI via MIKMIDI framework)
+- ✅ **Web**: Chrome 43+, Firefox 108+, Edge 79+
+- ⚠️ **Safari**: Limited support - Safari 14.1+ has partial WebMIDI API support (requires user permission and may have limitations)
+- ✅ **iOS**: iOS 13.0+ (using CoreMIDI via MIKMIDI framework) - **Recommended for iOS devices**
 - ⏳ **Android**: Planned for future release
+
+### WebMIDI Browser Support
+
+| Browser | Support Level | Notes |
+|---------|--------------|-------|
+| Chrome | ✅ Full | Complete WebMIDI API support since v43 |
+| Firefox | ✅ Full | Complete support since v108 |
+| Edge | ✅ Full | Complete support since v79 |
+| Safari | ⚠️ Limited | Partial support since 14.1, requires user permission |
+| iOS Safari | ❌ None | Use native iOS implementation instead |
+| Android Chrome | ✅ Full | Same as desktop Chrome |
+
+> **💡 Tip for iOS**: While Safari on iOS has limited WebMIDI support, this plugin provides full native CoreMIDI integration for iOS apps, offering better performance and reliability.
 
 ## 📋 Supported MIDI Messages
 
@@ -343,6 +357,7 @@ This enhanced fork includes several improvements over the original [musetrainer/
 - **🎯 Better Error Handling**: Structured error reporting and debugging
 - **📦 Package Management**: Scoped npm package with proper versioning
 - **🔍 Code Quality**: Linting, formatting, and code quality checks
+- **🌐 Better Browser Support**: Detailed WebMIDI compatibility information and fallbacks
 
 ## 📜 License
 

@@ -5,7 +5,7 @@
 
 # @kurogedelic/capacitor-midi
 
-Modern Capacitor MIDI plugin with comprehensive MIDI 1.0 support and full TypeScript integration. 
+Modern Capacitor MIDI plugin with comprehensive MIDI 1.0 support and full TypeScript integration.
 
 > **Note**: This is an enhanced fork of [musetrainer/capacitor-musetrainer-midi](https://github.com/musetrainer/capacitor-musetrainer-midi) with additional features, modern tooling, comprehensive tests, and improved developer experience.
 
@@ -37,9 +37,9 @@ const { devices } = await CapacitorMidi.listDevices();
 console.log('Available MIDI devices:', devices);
 
 // Listen for MIDI messages
-CapacitorMidi.addListener('commandReceive', (event) => {
+CapacitorMidi.addListener('commandReceive', event => {
   const { message, deviceId } = event;
-  
+
   switch (message.type) {
     case 'noteOn':
       console.log(`Note On: ${message.note}, velocity: ${message.velocity}`);
@@ -56,7 +56,7 @@ CapacitorMidi.addListener('commandReceive', (event) => {
 // Send MIDI commands
 await CapacitorMidi.sendCommand({
   command: [0x90, 60, 100], // Note On C4, velocity 100
-  timestamp: Date.now()
+  timestamp: Date.now(),
 });
 ```
 
@@ -69,34 +69,34 @@ await CapacitorMidi.sendCommand({
 
 ### WebMIDI Browser Support
 
-| Browser | Support Level | Notes |
-|---------|--------------|-------|
-| Chrome | ✅ Full | Complete WebMIDI API support since v43 |
-| Firefox | ✅ Full | Complete support since v108 |
-| Edge | ✅ Full | Complete support since v79 |
-| Safari | ⚠️ Limited | Partial support since 14.1, requires user permission |
-| iOS Safari | ❌ None | Use native iOS implementation instead |
-| Android Chrome | ✅ Full | Same as desktop Chrome |
+| Browser        | Support Level | Notes                                                |
+| -------------- | ------------- | ---------------------------------------------------- |
+| Chrome         | ✅ Full       | Complete WebMIDI API support since v43               |
+| Firefox        | ✅ Full       | Complete support since v108                          |
+| Edge           | ✅ Full       | Complete support since v79                           |
+| Safari         | ⚠️ Limited    | Partial support since 14.1, requires user permission |
+| iOS Safari     | ❌ None       | Use native iOS implementation instead                |
+| Android Chrome | ✅ Full       | Same as desktop Chrome                               |
 
 > **💡 Tip for iOS**: While Safari on iOS has limited WebMIDI support, this plugin provides full native CoreMIDI integration for iOS apps, offering better performance and reliability.
 
 ## 📋 Supported MIDI Messages
 
-| Message Type | Web | iOS | Description |
-|-------------|-----|-----|-------------|
-| Note On/Off | ✅ | ✅ | Musical note events |
-| Control Change | ✅ | ✅ | Continuous controllers (volume, pan, etc.) |
-| Program Change | ✅ | ✅ | Instrument/patch changes |
-| Pitch Bend | ✅ | ✅ | Pitch wheel modulation |
-| Channel Pressure | ✅ | ✅ | Channel-wide pressure/aftertouch |
-| Polyphonic Pressure | ✅ | ✅ | Per-note pressure/aftertouch |
-| System Exclusive | ✅ | ✅ | Manufacturer-specific messages |
+| Message Type        | Web | iOS | Description                                |
+| ------------------- | --- | --- | ------------------------------------------ |
+| Note On/Off         | ✅  | ✅  | Musical note events                        |
+| Control Change      | ✅  | ✅  | Continuous controllers (volume, pan, etc.) |
+| Program Change      | ✅  | ✅  | Instrument/patch changes                   |
+| Pitch Bend          | ✅  | ✅  | Pitch wheel modulation                     |
+| Channel Pressure    | ✅  | ✅  | Channel-wide pressure/aftertouch           |
+| Polyphonic Pressure | ✅  | ✅  | Per-note pressure/aftertouch               |
+| System Exclusive    | ✅  | ✅  | Manufacturer-specific messages             |
 
 ## 🏗️ Development
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - npm or yarn
 - Xcode (for iOS development)
 
@@ -341,18 +341,21 @@ listDevices() => Promise<{ devices: MIDIDevice[]; }>
 This enhanced fork includes several improvements over the original [musetrainer/capacitor-musetrainer-midi](https://github.com/musetrainer/capacitor-musetrainer-midi):
 
 ### ✨ New Features
+
 - **🔒 Complete Type Safety**: Structured TypeScript interfaces for all MIDI message types
 - **🧪 Comprehensive Testing**: 26+ unit tests with 80%+ coverage
 - **📊 Enhanced Web Support**: Full CC, SysEx, and all MIDI message types on Web platform
 - **⚡ Modern Tooling**: Capacitor v6, TypeScript 5, Jest, modern ESLint/Prettier
 
 ### 🛠️ Developer Experience
+
 - **🚀 CI/CD Pipeline**: GitHub Actions with automated testing and releases
 - **📋 Project Templates**: Issue templates, PR templates, proper documentation
 - **🤖 Automation**: Dependabot, automated coverage reporting, release workflows
 - **📖 Better Documentation**: Comprehensive API docs, usage examples, migration guides
 
 ### 🔧 Technical Improvements
+
 - **🏗️ Modern Build System**: Rollup v4, ES modules, CommonJS, and IIFE outputs
 - **🎯 Better Error Handling**: Structured error reporting and debugging
 - **📦 Package Management**: Scoped npm package with proper versioning

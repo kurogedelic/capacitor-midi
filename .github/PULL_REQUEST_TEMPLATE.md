@@ -29,7 +29,7 @@ Brief description of what this PR does.
 ## MIDI Functionality (if applicable)
 
 - [ ] Note On/Off messages
-- [ ] Control Change (CC) messages  
+- [ ] Control Change (CC) messages
 - [ ] System Exclusive (SysEx) messages
 - [ ] Program Change messages
 - [ ] Pitch Bend messages

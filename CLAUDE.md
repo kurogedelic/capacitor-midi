@@ -78,6 +78,7 @@ The plugin follows Capacitor's standard architecture:
 ## Testing and Verification
 
 The project includes comprehensive testing infrastructure:
+
 - **Jest test suite**: 26+ unit tests covering all MIDI functionality
 - **Coverage reporting**: 80%+ code coverage with automated reporting
 - **CI/CD pipeline**: GitHub Actions for automated testing and releases
@@ -90,6 +91,7 @@ Run tests with `npm test` or `npm run test:coverage` for coverage reports.
 This repository is an enhanced fork of the original [musetrainer/capacitor-musetrainer-midi](https://github.com/musetrainer/capacitor-musetrainer-midi) with the following key improvements:
 
 ### Enhancements Over Original
+
 - **Complete Type Safety**: Full TypeScript interfaces for all MIDI message types
 - **Comprehensive Testing**: Jest test suite with 80%+ coverage
 - **Enhanced Web Support**: Full CC, SysEx, and all MIDI message types on Web
@@ -98,6 +100,7 @@ This repository is an enhanced fork of the original [musetrainer/capacitor-muset
 - **Better Documentation**: Comprehensive API docs and usage examples
 
 ### New Package Details
+
 - **Package Name**: `@kurogedelic/capacitor-midi` (scoped package)
 - **Repository**: https://github.com/kurogedelic/capacitor-midi
 - **Maintains Compatibility**: Drop-in replacement for original with enhanced features

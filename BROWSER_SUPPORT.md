@@ -6,22 +6,22 @@ This document provides detailed information about WebMIDI API support across dif
 
 ### Desktop Browsers
 
-| Browser | Version | Support Level | Notes |
-|---------|---------|---------------|-------|
-| **Chrome** | 43+ | ✅ **Full Support** | Complete WebMIDI API implementation |
-| **Firefox** | 108+ | ✅ **Full Support** | Complete support added in late 2022 |
-| **Edge** | 79+ | ✅ **Full Support** | Chromium-based Edge has full support |
-| **Safari** | 14.1+ | ⚠️ **Limited Support** | Requires user permission, some limitations |
-| **Opera** | 30+ | ✅ **Full Support** | Based on Chromium |
+| Browser     | Version | Support Level          | Notes                                      |
+| ----------- | ------- | ---------------------- | ------------------------------------------ |
+| **Chrome**  | 43+     | ✅ **Full Support**    | Complete WebMIDI API implementation        |
+| **Firefox** | 108+    | ✅ **Full Support**    | Complete support added in late 2022        |
+| **Edge**    | 79+     | ✅ **Full Support**    | Chromium-based Edge has full support       |
+| **Safari**  | 14.1+   | ⚠️ **Limited Support** | Requires user permission, some limitations |
+| **Opera**   | 30+     | ✅ **Full Support**    | Based on Chromium                          |
 
 ### Mobile Browsers
 
-| Browser | Platform | Support Level | Notes |
-|---------|----------|---------------|-------|
-| **Chrome Mobile** | Android | ✅ **Full Support** | Same as desktop Chrome |
-| **Firefox Mobile** | Android | ✅ **Full Support** | Same as desktop Firefox |
-| **Safari Mobile** | iOS | ❌ **No Support** | Use native iOS implementation |
-| **Samsung Internet** | Android | ✅ **Full Support** | Based on Chromium |
+| Browser              | Platform | Support Level       | Notes                         |
+| -------------------- | -------- | ------------------- | ----------------------------- |
+| **Chrome Mobile**    | Android  | ✅ **Full Support** | Same as desktop Chrome        |
+| **Firefox Mobile**   | Android  | ✅ **Full Support** | Same as desktop Firefox       |
+| **Safari Mobile**    | iOS      | ❌ **No Support**   | Use native iOS implementation |
+| **Samsung Internet** | Android  | ✅ **Full Support** | Based on Chromium             |
 
 ## 🍎 Safari Limitations
 
@@ -30,12 +30,14 @@ This document provides detailed information about WebMIDI API support across dif
 Safari has **partial** WebMIDI API support with several important limitations:
 
 #### ✅ What Works
+
 - Basic MIDI device enumeration
 - Note On/Off messages
 - Control Change messages
 - Basic MIDI input/output
 
 #### ❌ What Doesn't Work Well
+
 - **User Permission Required**: Safari always prompts for MIDI access
 - **Limited SysEx Support**: System Exclusive messages may not work reliably
 - **Timing Issues**: Less precise timing compared to Chrome/Firefox
@@ -51,7 +53,7 @@ const checkWebMIDISupport = async () => {
     console.warn('WebMIDI API not supported in this browser');
     return false;
   }
-  
+
   try {
     const access = await navigator.requestMIDIAccess({ sysex: false });
     return true;
@@ -91,8 +93,8 @@ import { Capacitor } from '@capacitor/core';
 if (Capacitor.getPlatform() === 'ios') {
   // Use native iOS implementation - full CoreMIDI support
   const devices = await CapacitorMidi.listDevices();
-  
-  CapacitorMidi.addListener('commandReceive', (event) => {
+
+  CapacitorMidi.addListener('commandReceive', event => {
     // Reliable MIDI message handling on iOS
     console.log('MIDI message:', event.message);
   });
@@ -113,45 +115,53 @@ Always use feature detection to provide the best user experience:
 ```typescript
 const getMIDICapabilities = async () => {
   const platform = Capacitor.getPlatform();
-  
+
   if (platform === 'ios') {
     return {
       platform: 'ios',
       support: 'full',
       implementation: 'native-coremidi',
-      features: ['all-midi-messages', 'low-latency', 'reliable-device-handling']
+      features: [
+        'all-midi-messages',
+        'low-latency',
+        'reliable-device-handling',
+      ],
     };
   }
-  
+
   if (platform === 'web') {
     const hasWebMIDI = !!navigator.requestMIDIAccess;
     const userAgent = navigator.userAgent.toLowerCase();
-    
+
     if (userAgent.includes('safari') && !userAgent.includes('chrome')) {
       return {
         platform: 'safari',
         support: 'limited',
         implementation: 'webmidi-limited',
         features: ['basic-midi', 'requires-permission'],
-        limitations: ['unreliable-sysex', 'timing-issues', 'permission-required']
+        limitations: [
+          'unreliable-sysex',
+          'timing-issues',
+          'permission-required',
+        ],
       };
     }
-    
+
     if (hasWebMIDI) {
       return {
         platform: 'web',
         support: 'full',
         implementation: 'webmidi',
-        features: ['all-midi-messages', 'good-timing', 'device-management']
+        features: ['all-midi-messages', 'good-timing', 'device-management'],
       };
     }
   }
-  
+
   return {
     platform: platform,
     support: 'none',
     implementation: 'unsupported',
-    features: []
+    features: [],
   };
 };
 ```
@@ -176,19 +186,19 @@ const getMIDICapabilities = async () => {
 // Good UX pattern
 const initializeMIDI = async () => {
   const capabilities = await getMIDICapabilities();
-  
+
   switch (capabilities.support) {
     case 'full':
       // Proceed with full MIDI functionality
       await initializeFullMIDI();
       break;
-      
+
     case 'limited':
       // Show warning about limitations
       showSafariLimitationsWarning();
       await initializeLimitedMIDI();
       break;
-      
+
     case 'none':
       // Show browser upgrade suggestion
       showUnsupportedBrowserMessage();
@@ -217,6 +227,7 @@ const showSafariLimitationsWarning = () => {
 ### Plugin Development
 
 This plugin will continue to:
+
 - Monitor browser WebMIDI API improvements
 - Provide the best available implementation for each platform
 - Maintain feature detection and graceful degradation

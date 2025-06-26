@@ -29,7 +29,7 @@ If this is MIDI-related, please specify:
 - [ ] MIDI 2.0 / UMP
 - [ ] System Exclusive (SysEx)
 - [ ] MIDI-CI
-- [ ] Other: ___________
+- [ ] Other: \***\*\_\_\_\*\***
 
 **Implementation Complexity**
 How complex do you think this feature might be?

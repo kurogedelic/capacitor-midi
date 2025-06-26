@@ -9,11 +9,13 @@ This guide helps you migrate from the original `capacitor-musetrainer-midi` to t
 ### 1. Update Package Installation
 
 **Remove the old package:**
+
 ```bash
 npm uninstall capacitor-musetrainer-midi
 ```
 
 **Install the new package:**
+
 ```bash
 npm install @kurogedelic/capacitor-midi
 npx cap sync
@@ -22,16 +24,19 @@ npx cap sync
 ### 2. Update Import Statements
 
 **Before:**
+
 ```typescript
 import { CapacitorMuseTrainerMidi } from 'capacitor-musetrainer-midi';
 ```
 
 **After (Recommended):**
+
 ```typescript
 import { CapacitorMidi } from '@kurogedelic/capacitor-midi';
 ```
 
 **After (Backward Compatible):**
+
 ```typescript
 import { CapacitorMuseTrainerMidi } from '@kurogedelic/capacitor-midi';
 ```
@@ -41,6 +46,7 @@ import { CapacitorMuseTrainerMidi } from '@kurogedelic/capacitor-midi';
 The new package provides enhanced TypeScript support. You can optionally update your code to use the improved type definitions:
 
 **Before:**
+
 ```typescript
 CapacitorMuseTrainerMidi.addListener('commandReceive', (args: any) => {
   // args is untyped
@@ -49,11 +55,12 @@ CapacitorMuseTrainerMidi.addListener('commandReceive', (args: any) => {
 ```
 
 **After:**
+
 ```typescript
-CapacitorMidi.addListener('commandReceive', (event) => {
+CapacitorMidi.addListener('commandReceive', event => {
   // event is fully typed
   const { message, deviceId } = event;
-  
+
   switch (message.type) {
     case 'noteOn':
       console.log(`Note On: ${message.note}, velocity: ${message.velocity}`);
@@ -73,11 +80,12 @@ CapacitorMidi.addListener('commandReceive', (event) => {
 After migration, you gain access to:
 
 ### Improved Type Safety
+
 ```typescript
-import type { 
-  MIDIMessage, 
-  MIDINoteMessage, 
-  MIDIControlChangeMessage 
+import type {
+  MIDIMessage,
+  MIDINoteMessage,
+  MIDIControlChangeMessage,
 } from '@kurogedelic/capacitor-midi';
 
 // All MIDI message types are now properly defined
@@ -87,20 +95,21 @@ const handleMidiMessage = (message: MIDIMessage) => {
 ```
 
 ### Enhanced Web Support
+
 ```typescript
 // Now supports all MIDI message types on Web platform
-CapacitorMidi.addListener('commandReceive', (event) => {
+CapacitorMidi.addListener('commandReceive', event => {
   const { message } = event;
-  
+
   switch (message.type) {
     case 'noteOn':
     case 'noteOff':
-    case 'controlChange':    // ✅ Now supported on Web
-    case 'programChange':    // ✅ Now supported on Web
-    case 'pitchBend':        // ✅ Now supported on Web
-    case 'channelPressure':  // ✅ Now supported on Web
+    case 'controlChange': // ✅ Now supported on Web
+    case 'programChange': // ✅ Now supported on Web
+    case 'pitchBend': // ✅ Now supported on Web
+    case 'channelPressure': // ✅ Now supported on Web
     case 'polyphonicPressure': // ✅ Now supported on Web
-    case 'sysex':            // ✅ Now supported on Web
+    case 'sysex': // ✅ Now supported on Web
       // Handle all message types
       break;
   }
@@ -108,16 +117,17 @@ CapacitorMidi.addListener('commandReceive', (event) => {
 ```
 
 ### Better Device Information
+
 ```typescript
 const { devices } = await CapacitorMidi.listDevices();
 
 devices.forEach(device => {
   console.log({
-    id: device.id,           // ✅ Structured device ID
-    name: device.name,       // ✅ Device name
+    id: device.id, // ✅ Structured device ID
+    name: device.name, // ✅ Device name
     manufacturer: device.manufacturer, // ✅ Manufacturer info
-    type: device.type,       // ✅ 'input' | 'output' | 'both'
-    connected: device.connected // ✅ Connection status
+    type: device.type, // ✅ 'input' | 'output' | 'both'
+    connected: device.connected, // ✅ Connection status
   });
 });
 ```
@@ -143,6 +153,7 @@ After migration, your development experience improves with:
 ## 🚨 Potential Issues
 
 ### iOS Build Changes
+
 If you encounter iOS build issues, update your Podfile:
 
 ```ruby
@@ -151,11 +162,13 @@ pod 'CapacitorMidi', :path => '../../node_modules/@kurogedelic/capacitor-midi'
 ```
 
 Then run:
+
 ```bash
 cd ios && pod install && cd ..
 ```
 
 ### TypeScript Strict Mode
+
 If using strict TypeScript settings, you may need to handle the improved type safety:
 
 ```typescript

@@ -60,6 +60,23 @@ await CapacitorMidi.sendCommand({
 });
 ```
 
+## 🚀 Try the Example
+
+Check out the interactive example application in the [`example/`](./example/) directory:
+
+```bash
+cd example
+npm install
+npm run dev
+```
+
+The example demonstrates:
+- 🔌 Device management and monitoring
+- 🎹 Virtual keyboard for sending notes
+- 🎛️ MIDI controls (CC, Program Change, Pitch Bend, SysEx)
+- 📊 Real-time message logging
+- 🎵 Support for all MIDI message types
+
 ## 🔧 Supported Platforms
 
 - ✅ **Web**: Chrome 43+, Firefox 108+, Edge 79+

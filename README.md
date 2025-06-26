@@ -151,11 +151,13 @@ npm install
 #### Using in Your Project
 
 **From npm:**
+
 ```bash
 npm install @kurogedelic/capacitor-midi
 ```
 
 **From GitHub (if npm is not accessible):**
+
 ```bash
 npm install github:kurogedelic/capacitor-midi
 ```

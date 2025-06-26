@@ -13,11 +13,13 @@ This example demonstrates how to use the `@kurogedelic/capacitor-midi` plugin in
 ## Quick Start
 
 1. **Install dependencies**:
+
    ```bash
    npm install
    ```
 
 2. **Start development server**:
+
    ```bash
    npm run dev
    ```
@@ -77,7 +79,7 @@ example/
 const { devices } = await CapacitorMidi.listDevices();
 
 // Listen for device changes
-CapacitorMidi.addListener('deviceChange', (event) => {
+CapacitorMidi.addListener('deviceChange', event => {
   console.log(`Device ${event.state}: ${event.device.name}`);
 });
 ```
@@ -93,7 +95,7 @@ await CapacitorMidi.sendCommand({
 
 // Send Control Change
 await CapacitorMidi.sendCommand({
-  command: [0xB0, 7, 64], // CC #7 (Volume), value 64
+  command: [0xb0, 7, 64], // CC #7 (Volume), value 64
   timestamp: Date.now(),
 });
 ```
@@ -101,9 +103,9 @@ await CapacitorMidi.sendCommand({
 ### Receiving MIDI Messages
 
 ```typescript
-CapacitorMidi.addListener('commandReceive', (event) => {
+CapacitorMidi.addListener('commandReceive', event => {
   const { message, deviceId } = event;
-  
+
   switch (message.type) {
     case 'noteOn':
       console.log(`Note ON: ${message.note}, velocity: ${message.velocity}`);
@@ -118,13 +120,13 @@ CapacitorMidi.addListener('commandReceive', (event) => {
 
 ## Browser Compatibility
 
-| Browser        | Support Level | Notes                    |
-| -------------- | ------------- | ------------------------ |
-| Chrome 43+     | ✅ Full       | Recommended              |
-| Firefox 108+   | ✅ Full       | Recommended              |
-| Edge 79+       | ✅ Full       | Recommended              |
-| Safari 14.1+   | ⚠️ Limited    | Use with caution         |
-| iOS Safari     | ❌ None       | Use native iOS app       |
+| Browser      | Support Level | Notes              |
+| ------------ | ------------- | ------------------ |
+| Chrome 43+   | ✅ Full       | Recommended        |
+| Firefox 108+ | ✅ Full       | Recommended        |
+| Edge 79+     | ✅ Full       | Recommended        |
+| Safari 14.1+ | ⚠️ Limited    | Use with caution   |
+| iOS Safari   | ❌ None       | Use native iOS app |
 
 ## Troubleshooting
 

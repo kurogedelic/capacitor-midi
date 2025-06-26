@@ -28,7 +28,7 @@ Modern Capacitor MIDI plugin with comprehensive MIDI 1.0 support and full TypeSc
 - 🔒 **Type Safe**: Full TypeScript definitions with structured MIDI message types
 - ⚡ **Real-time Performance**: Optimized for low-latency MIDI processing
 - 🧪 **Well Tested**: Comprehensive test suite with 80%+ coverage
-- 📦 **Modern Tooling**: Built with Capacitor v6, TypeScript 5, and modern build tools
+- 📦 **Modern Tooling**: Built with Capacitor v7, TypeScript 5, and modern build tools
 
 ## 🚀 Quick Start
 
@@ -103,7 +103,7 @@ The example demonstrates:
 
 - ✅ **Web**: Chrome 43+, Firefox 108+, Edge 79+
 - ⚠️ **Safari**: Limited support - Safari 14.1+ has partial WebMIDI API support (requires user permission and may have limitations)
-- ✅ **iOS**: iOS 13.0+ (using CoreMIDI via MIKMIDI framework) - **Recommended for iOS devices**
+- ✅ **iOS**: iOS 14.0+ (using CoreMIDI via MIKMIDI framework) - **Recommended for iOS devices**
 - ⏳ **Android**: Planned for future release
 
 ### WebMIDI Browser Support
@@ -135,9 +135,10 @@ The example demonstrates:
 
 ### Prerequisites
 
-- Node.js 18+
+- Node.js 20+ (required for Capacitor 7)
 - npm or yarn
-- Xcode (for iOS development)
+- Xcode 16.0+ (for iOS development)
+- Android Studio Ladybug | 2024.2.1+ with Java JDK 21 (for Android development)
 
 ### Setup
 
@@ -413,7 +414,7 @@ This enhanced fork includes several improvements over the original [musetrainer/
 - **🔒 Complete Type Safety**: Structured TypeScript interfaces for all MIDI message types
 - **🧪 Comprehensive Testing**: 26+ unit tests with 80%+ coverage
 - **📊 Enhanced Web Support**: Full CC, SysEx, and all MIDI message types on Web platform
-- **⚡ Modern Tooling**: Capacitor v6, TypeScript 5, Jest, modern ESLint/Prettier
+- **⚡ Modern Tooling**: Capacitor v7, TypeScript 5, Jest, modern ESLint/Prettier
 
 ### 🛠️ Developer Experience
 

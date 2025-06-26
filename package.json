@@ -1,6 +1,6 @@
 {
   "name": "@kurogedelic/capacitor-midi",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Modern Capacitor MIDI plugin with comprehensive MIDI 1.0 support and full TypeScript integration",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
@@ -68,10 +68,10 @@
     "release": "npm run build && npm publish"
   },
   "devDependencies": {
-    "@capacitor/android": "^6.0.0",
-    "@capacitor/core": "^6.2.1",
+    "@capacitor/android": "^7.0.0",
+    "@capacitor/core": "^7.4.0",
     "@capacitor/docgen": "^0.2.2",
-    "@capacitor/ios": "^6.0.0",
+    "@capacitor/ios": "^7.0.0",
     "@testing-library/jest-dom": "^6.0.0",
     "@types/jest": "^29.0.0",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
@@ -88,7 +88,7 @@
     "typescript": "^5.8.3"
   },
   "peerDependencies": {
-    "@capacitor/core": "^6.0.0"
+    "@capacitor/core": "^7.0.0"
   },
   "capacitor": {
     "ios": {

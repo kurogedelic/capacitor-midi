@@ -1,6 +1,4 @@
-import { defineConfig } from 'rollup';
-
-export default defineConfig({
+module.exports = {
   input: 'dist/esm/index.js',
   output: [
     {
@@ -28,4 +26,4 @@ export default defineConfig({
   ],
   external: ['@capacitor/core'],
   treeshake: true,
-});
+};

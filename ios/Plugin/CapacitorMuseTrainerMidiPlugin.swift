@@ -106,7 +106,8 @@ public class CapacitorMuseTrainerMidiPlugin: CAPPlugin {
                                 
                                 // Add message-specific fields based on MIDI command data
                                 // Use raw MIDI data bytes for compatibility across MIKMIDI versions
-                                if let midiData = cmd.rawData, midiData.count >= 1 {
+                                if let nsData = cmd.data, nsData.count >= 1 {
+                                    let midiData = [UInt8](nsData)
                                     let status = midiData[0]
                                     let command = (status & 0xF0) >> 4
                                     
@@ -145,7 +146,8 @@ public class CapacitorMuseTrainerMidiPlugin: CAPPlugin {
                                     }
                                 } else if cmd.commandType == .systemExclusive {
                                     // For SysEx, include the full MIDI data
-                                    if let midiData = cmd.rawData {
+                                    if let nsData = cmd.data {
+                                        let midiData = [UInt8](nsData)
                                         message["data"] = midiData.map { Int($0) }
                                     }
                                 }

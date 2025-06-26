@@ -5,6 +5,8 @@
 
 Modern Capacitor MIDI plugin with comprehensive MIDI 1.0 support and full TypeScript integration.
 
+![test](https://github.com/user-attachments/assets/254f1734-9fdd-4866-b981-cf218b3c55ec)
+
 > **Note**: This is an enhanced fork of [musetrainer/capacitor-musetrainer-midi](https://github.com/musetrainer/capacitor-musetrainer-midi) with additional features, modern tooling, comprehensive tests, and improved developer experience.
 
 ## 🎵 Enhanced Example App

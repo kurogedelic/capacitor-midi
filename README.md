@@ -1,5 +1,6 @@
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/kurogedelic/capacitor-midi/blob/main/LICENSE)
 [![CI](https://github.com/kurogedelic/capacitor-midi/workflows/CI/badge.svg)](https://github.com/kurogedelic/capacitor-midi/actions)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/kurogedelic/capacitor-midi)
 
 # capacitor-midi
 
